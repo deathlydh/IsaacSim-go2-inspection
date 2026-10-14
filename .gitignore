@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+# ROS 2 workspace build artifacts
+build/
+install/
+log/
+# large captures
+shots/*.mp4
