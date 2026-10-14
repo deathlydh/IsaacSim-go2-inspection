@@ -1,0 +1,68 @@
+﻿=== START
+scene: D:/go2-inspection/scenes/inspection.usd | spawn: [0.0, 0.0, 0.5] from default
+policy: bundled | engine: physx | speed per key: 0.5 | sim device: cpu | gpu dynamics: False
+camera: None
+playing: True | policy ready: True | failed: False
+=== DRIFT
+policy: bundled | command: [0.0, 0.0, 0.0] | ready: True | failed: False | playing: True
+camera: None
+over 6s at zero command: yaw -0.1 -> -6.2 deg (-1.02 deg/s), xy drift 0.028 m, base z mean 0.229 m
+=== GAIT
+physx scene: solver TGS | steps/s 200 | stabilization False | bounceThr 0.0 | frictionOffsetThr 0.03999999910593033 | frictionCorrDist 0.02500000037252903
+ready: True | failed: False | dofs: ['FL_hip_joint', 'FR_hip_joint', 'RL_hip_joint', 'RR_hip_joint', 'FL_thigh_joint', 'FR_thigh_joint', 'RL_thigh_joint', 'RR_thigh_joint', 'FL_calf_joint', 'FR_calf_joint', 'RL_calf_joint', 'RR_calf_joint']
+command reset to [0.0, 0.0, 0.0]
+samples: 850 | median sim dt per update: 0.0200 s
+
+=== stand cmd=(0.0, 0.0, 0.0) window=1.46s (after 1.5s) ===
+base z mean 0.229 std 0.000 min 0.229 m | roll 0.9 pitch -1.4 deg
+vx_body 0.000 vy_body 0.000 | |v_xy| 0.000 | displacement speed 0.000 m/s | yaw rate 0.000
+joint mean  (hips FL FR RL RR | thighs | calves): [0.261, 0.025, 0.206, -0.043, 0.828, 0.687, 1.515, 1.414, -1.927, -2.035, -1.75, -2.042]
+target mean (hips | thighs | calves):            [0.269, 0.047, 0.203, -0.106, 0.868, 0.841, 1.298, 1.375, -1.648, -1.676, -1.738, -1.782]
+FL leg range hip/thigh/calf: [[0.261, 0.261], [0.828, 0.828], [-1.927, -1.927]]
+foot contact z (p5): [0.024, 0.024, 0.023, 0.023] | foot clearance p98-p5: [0.0, 0.0, 0.0, 0.0]
+feet in base frame mean xyz: [[0.226, 0.201, -0.208], [0.266, -0.137, -0.214], [-0.357, 0.185, -0.195], [-0.279, -0.151, -0.201]]
+step freq: zero-cross FL thigh 0.34 Hz, FL calf 0.34 Hz | FFT calves [0.591, 0.676, 0.676, 0.676] thighs [0.676, 0.676, 0.676, 0.676]
+lift-offs per s (>1cm) FL FR RL RR: [0.0, 0.0, 0.0, 0.0] | duty factor: [1.0, 1.0, 1.0, 1.0]
+calf corr diag FL-RR 0.93 FR-RL -1.00 | lateral FL-FR -0.94 | ipsi FL-RL 0.95
+mean |tau| hip/thigh/calf: [0.593, 2.798, 5.665] | |tau|max 8.97 | frac >=23.4 Nm: 0.0
+
+=== walk_0.5 cmd=(0.5, 0.0, 0.0) window=3.96s (after 2.0s) ===
+base z mean 0.145 std 0.001 min 0.143 m | roll -0.3 pitch 1.5 deg
+vx_body 0.435 vy_body 0.000 | |v_xy| 0.438 | displacement speed 0.435 m/s | yaw rate -0.045
+joint mean  (hips FL FR RL RR | thighs | calves): [0.638, -0.687, 0.544, -0.467, 1.001, 1.03, 1.528, 1.638, -2.06, -2.001, -1.781, -1.604]
+target mean (hips | thighs | calves):            [0.218, -0.269, 0.36, -0.281, 1.02, 1.045, 1.439, 1.451, -1.816, -1.798, -1.757, -1.64]
+FL leg range hip/thigh/calf: [[0.618, 0.66], [0.781, 1.203], [-2.093, -2.029]]
+foot contact z (p5): [0.023, 0.023, 0.022, 0.022] | foot clearance p98-p5: [0.0, 0.0, 0.001, 0.001]
+feet in base frame mean xyz: [[0.2, 0.253, -0.118], [0.187, -0.265, -0.116], [-0.353, 0.239, -0.133], [-0.413, -0.221, -0.133]]
+step freq: zero-cross FL thigh 3.28 Hz, FL calf 3.28 Hz | FFT calves [3.329, 3.329, 3.329, 3.329] thighs [3.329, 3.329, 3.329, 6.69]
+lift-offs per s (>1cm) FL FR RL RR: [0.0, 0.0, 0.0, 0.0] | duty factor: [1.0, 1.0, 1.0, 1.0]
+calf corr diag FL-RR -0.96 FR-RL -0.90 | lateral FL-FR -0.85 | ipsi FL-RL 0.83
+mean |tau| hip/thigh/calf: [7.574, 4.712, 3.917] | |tau|max 15.22 | frac >=23.4 Nm: 0.0
+
+=== walk_1.0 cmd=(1.0, 0.0, 0.0) window=3.96s (after 2.0s) ===
+base z mean 0.124 std 0.001 min 0.123 m | roll 0.2 pitch 0.0 deg
+vx_body 0.963 vy_body 0.020 | |v_xy| 0.965 | displacement speed 0.962 m/s | yaw rate -0.051
+joint mean  (hips FL FR RL RR | thighs | calves): [0.635, -0.66, 0.691, -0.504, 0.81, 0.89, 1.552, 1.754, -2.136, -2.106, -1.673, -1.65]
+target mean (hips | thighs | calves):            [0.323, -0.291, 0.442, -0.314, 0.909, 1.035, 1.425, 1.528, -1.871, -1.842, -1.688, -1.75]
+FL leg range hip/thigh/calf: [[0.598, 0.683], [0.476, 1.179], [-2.246, -1.998]]
+foot contact z (p5): [0.023, 0.023, 0.022, 0.021] | foot clearance p98-p5: [0.0, 0.0, 0.002, 0.001]
+feet in base frame mean xyz: [[0.247, 0.238, -0.099], [0.228, -0.247, -0.101], [-0.381, 0.254, -0.101], [-0.425, -0.213, -0.103]]
+step freq: zero-cross FL thigh 4.17 Hz, FL calf 4.17 Hz | FFT calves [4.24, 4.24, 4.24, 4.24] thighs [4.24, 4.24, 4.24, 4.24]
+lift-offs per s (>1cm) FL FR RL RR: [0.0, 0.0, 0.0, 0.0] | duty factor: [1.0, 1.0, 1.0, 1.0]
+calf corr diag FL-RR -0.92 FR-RL -0.93 | lateral FL-FR -0.85 | ipsi FL-RL 0.77
+mean |tau| hip/thigh/calf: [7.039, 5.399, 4.81] | |tau|max 15.92 | frac >=23.4 Nm: 0.0
+
+=== stop cmd=(0.0, 0.0, 0.0) window=1.46s (after 0.5s) ===
+base z mean 0.196 std 0.000 min 0.195 m | roll 0.9 pitch 1.2 deg
+vx_body -0.003 vy_body 0.011 | |v_xy| 0.011 | displacement speed 0.011 m/s | yaw rate -0.007
+joint mean  (hips FL FR RL RR | thighs | calves): [0.527, -0.451, 0.249, -0.375, 1.027, 0.66, 1.491, 1.423, -1.903, -1.909, -1.963, -1.715]
+target mean (hips | thighs | calves):            [0.144, -0.148, 0.153, -0.2, 0.917, 0.869, 1.392, 1.212, -1.666, -1.639, -1.933, -1.642]
+FL leg range hip/thigh/calf: [[0.517, 0.534], [1.011, 1.044], [-1.936, -1.878]]
+foot contact z (p5): [0.023, 0.024, 0.023, 0.022] | foot clearance p98-p5: [0.0, 0.0, 0.0, 0.0]
+feet in base frame mean xyz: [[0.175, 0.253, -0.165], [0.265, -0.235, -0.17], [-0.309, 0.19, -0.177], [-0.343, -0.222, -0.184]]
+step freq: zero-cross FL thigh 0.34 Hz, FL calf 0.34 Hz | FFT calves [0.676, 0.676, 0.676, 0.676] thighs [0.676, 0.676, 0.676, 0.676]
+lift-offs per s (>1cm) FL FR RL RR: [0.0, 0.0, 0.0, 0.0] | duty factor: [1.0, 1.0, 1.0, 1.0]
+calf corr diag FL-RR -0.99 FR-RL -1.00 | lateral FL-FR -0.98 | ipsi FL-RL 0.98
+mean |tau| hip/thigh/calf: [5.986, 3.95, 3.817] | |tau|max 10.33 | frac >=23.4 Nm: 0.0
+
+final: ready True failed False command [0.0, 0.0, 0.0] base [7.619, -3.281, 0.196]

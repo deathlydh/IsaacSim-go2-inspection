@@ -1,0 +1,1012 @@
+{
+  "scene": "factory_hall.usda",
+  "generated_by": "tools/isaac/build_factory.py",
+  "units": "meters, Z up, floor at z = 0, yaw in degrees counter-clockwise from +X",
+  "assets_root": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1",
+  "environment": {
+    "reference": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/Environments/Simple_Warehouse/warehouse.usd",
+    "prim": "/World/Env",
+    "deactivated": [
+      "SM_FireExtinguisher_18",
+      "SM_FireExtinguisher_24",
+      "SM_PaletteA_11",
+      "SM_PaletteA_12",
+      "SM_PaletteA_151",
+      "SM_PaletteA_161",
+      "SM_PaletteA_270",
+      "SM_PaletteA_307",
+      "SM_PaletteA_308",
+      "SM_PaletteA_309",
+      "SM_PaletteA_314",
+      "SM_PaletteA_315",
+      "SM_PaletteA_316",
+      "SM_PaletteA_318",
+      "SM_PaletteA_319",
+      "SM_PaletteA_357",
+      "SM_PaletteA_358",
+      "SM_PaletteA_359",
+      "SM_PaletteA_465",
+      "SM_PaletteA_466",
+      "SM_PaletteA_470",
+      "SM_PaletteA_5",
+      "SM_PaletteA_6",
+      "SM_PaletteA_76",
+      "SM_PaletteA_77",
+      "SM_PaletteA_78",
+      "SM_PushcartA_02_22",
+      "SM_RackFrame_159",
+      "SM_RackFrame_160",
+      "SM_RackFrame_161",
+      "SM_RackFrame_162",
+      "SM_RackFrame_163",
+      "SM_RackFrame_164",
+      "SM_RackFrame_165",
+      "SM_RackFrame_166",
+      "SM_RackFrame_167",
+      "SM_RackFrame_168",
+      "SM_RackShelf_156",
+      "SM_RackShelf_157",
+      "SM_RackShelf_158",
+      "SM_RackShelf_159",
+      "SM_RackShelf_160",
+      "SM_RackShelf_161",
+      "SM_RackShelf_162",
+      "SM_RackShelf_163",
+      "SM_RackShelf_164",
+      "SM_RackShelf_165",
+      "SM_RackShelf_166",
+      "SM_RackShelf_167",
+      "SM_RackShelf_170",
+      "SM_Rackshield_43",
+      "SM_Rackshield_50",
+      "SM_SignCVer_139",
+      "SM_SignCVer_140",
+      "SM_SignCVer_141",
+      "SM_SignCVer_142",
+      "SM_SignCVer_143",
+      "SM_SignCVer_144",
+      "SM_SignCVer_145",
+      "SM_SignCVer_146",
+      "SM_SignCVer_150",
+      "SM_SignCVer_151",
+      "SM_SignCVer_153",
+      "SM_SignCVer_185",
+      "SM_SignCVer_186",
+      "SM_SignCVer_187",
+      "SM_SignCVer_188",
+      "SM_SignCVer_189",
+      "SM_SignCVer_190",
+      "SM_SignCVer_191",
+      "SM_SignCVer_192",
+      "SM_SignCVer_193",
+      "SM_SignCVer_194",
+      "SM_SignCVer_195",
+      "SM_SignCVer_196",
+      "SM_SignCVer_197",
+      "SM_SignCVer_198",
+      "SM_SignCVer_199",
+      "SM_SignCVer_200",
+      "SM_SignCVer_201",
+      "SM_SignCVer_203",
+      "S_AisleSign12",
+      "S_AisleSign_47",
+      "S_Barcode886",
+      "SM_PaletteA_360",
+      "SM_CardBoxA_02",
+      "KLT_Bins"
+    ],
+    "kept": {
+      "SM_BeamA": 12,
+      "SM_BracketBeam": 10,
+      "SM_BracketSlot": 20,
+      "SM_CeilingA": 24,
+      "SM_FloorDecal_Keepclear": 1,
+      "SM_FloorDecal_RecRed": 2,
+      "SM_FloorDecal_StripeFull": 8,
+      "SM_FuseBox": 2,
+      "SM_LampCeilingA": 16,
+      "SM_PillarA": 5,
+      "SM_PillarPartA": 10,
+      "SM_SignA": 1,
+      "SM_SignB": 2,
+      "SM_WallA": 34,
+      "SM_WallA_InnerCorner": 20,
+      "SM_WallWire": 9,
+      "SM_floor": 24,
+      "Camera": 1,
+      "DistantLight": 1,
+      "GroundPlane": 1,
+      "RectLight": 1
+    }
+  },
+  "hall_interior_xy": {
+    "x": [
+      -9.98,
+      9.07
+    ],
+    "y": [
+      -11.85,
+      17.65
+    ]
+  },
+  "aisle": {
+    "axis": "x",
+    "centerline_y": 0.0,
+    "x_range": [
+      -9.0,
+      8.5
+    ],
+    "clear_width_m": 3.214,
+    "south_edge_y": -1.607,
+    "north_edge_y": 1.607
+  },
+  "robot_spawn": {
+    "position": [
+      -8.0,
+      0.0,
+      0.0
+    ],
+    "yaw_deg": 0.0,
+    "clearance_m": 1.879,
+    "note": "On the floor in the aisle facing +X along it. start_go2.py drops the robot from z=0.5; its current default (0, 0) is also free aisle space."
+  },
+  "camera_assumption": {
+    "front_camera_offset_from_base_m": 0.327,
+    "vertical_fov_deg": 45.2,
+    "camera_to_dial_at_waypoint_m": 0.87
+  },
+  "gauge_convention": "dial faces gauge-local +X, 12 o'clock = local +Z; needle_angle_deg is clockwise from 12 o'clock seen from the front; vmin at -sweep/2, vmax at +sweep/2",
+  "inspection_route": [
+    "Gauge_01",
+    "Gauge_03",
+    "Gauge_04",
+    "Gauge_02",
+    "Gauge_05"
+  ],
+  "gauges": [
+    {
+      "prim_path": "/World/Gauges/Gauge_01",
+      "label": "PI-101",
+      "value": 6.4,
+      "vmin": 0.0,
+      "vmax": 10.0,
+      "unit": "bar",
+      "sweep_deg": 270.0,
+      "needle_angle_deg": 37.80000000000001,
+      "diameter_m": 0.1,
+      "center_world": [
+        -4.6,
+        -2.285,
+        0.475
+      ],
+      "face_normal_world": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "up_world": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "right_world": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "dial_texture": "./textures/gauges/gauge_01_pi101.png",
+      "id": "Gauge_01",
+      "mounted_on": "Line A header (top)",
+      "mount": "bottom",
+      "waypoint": {
+        "x": -4.6,
+        "y": -1.085,
+        "yaw_deg": -90.0,
+        "standoff_m": 1.2,
+        "clearance_m": 1.15
+      }
+    },
+    {
+      "prim_path": "/World/Gauges/Gauge_02",
+      "label": "PI-102",
+      "value": 11.5,
+      "vmin": 0.0,
+      "vmax": 16.0,
+      "unit": "bar",
+      "sweep_deg": 270.0,
+      "needle_angle_deg": 59.0625,
+      "diameter_m": 0.16,
+      "center_world": [
+        0.9,
+        -2.276,
+        0.495
+      ],
+      "face_normal_world": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "up_world": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "right_world": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "dial_texture": "./textures/gauges/gauge_02_pi102.png",
+      "id": "Gauge_02",
+      "mounted_on": "Line A header after valve (top)",
+      "mount": "bottom",
+      "waypoint": {
+        "x": 0.9,
+        "y": -1.076,
+        "yaw_deg": -90.0,
+        "standoff_m": 1.2,
+        "clearance_m": 1.159
+      }
+    },
+    {
+      "prim_path": "/World/Gauges/Gauge_03",
+      "label": "PI-201",
+      "value": 87.0,
+      "vmin": 0.0,
+      "vmax": 160.0,
+      "unit": "psi",
+      "sweep_deg": 270.0,
+      "needle_angle_deg": 11.8125,
+      "diameter_m": 0.125,
+      "center_world": [
+        -4.6,
+        2.4315,
+        0.5
+      ],
+      "face_normal_world": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "up_world": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "right_world": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "dial_texture": "./textures/gauges/gauge_03_pi201.png",
+      "id": "Gauge_03",
+      "mounted_on": "stainless IBC wall",
+      "mount": "back",
+      "waypoint": {
+        "x": -4.6,
+        "y": 1.232,
+        "yaw_deg": 90.0,
+        "standoff_m": 1.2,
+        "clearance_m": 1.194
+      }
+    },
+    {
+      "prim_path": "/World/Gauges/Gauge_04",
+      "label": "PI-202",
+      "value": -0.62,
+      "vmin": -1.0,
+      "vmax": 0.0,
+      "unit": "bar",
+      "sweep_deg": 270.0,
+      "needle_angle_deg": -32.400000000000006,
+      "diameter_m": 0.1,
+      "center_world": [
+        -1.25,
+        2.285,
+        0.45
+      ],
+      "face_normal_world": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "up_world": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "right_world": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "dial_texture": "./textures/gauges/gauge_04_pi202.png",
+      "id": "Gauge_04",
+      "mounted_on": "instrument stand by caged IBC",
+      "mount": "bottom",
+      "waypoint": {
+        "x": -1.25,
+        "y": 1.085,
+        "yaw_deg": 90.0,
+        "standoff_m": 1.2,
+        "clearance_m": 1.09
+      }
+    },
+    {
+      "prim_path": "/World/Gauges/Gauge_05",
+      "label": "TI-103",
+      "value": 168.0,
+      "vmin": 0.0,
+      "vmax": 250.0,
+      "unit": "°C",
+      "sweep_deg": 270.0,
+      "needle_angle_deg": 46.44,
+      "diameter_m": 0.1,
+      "center_world": [
+        2.0,
+        -2.155,
+        0.32
+      ],
+      "face_normal_world": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "up_world": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "right_world": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "dial_texture": "./textures/gauges/gauge_05_ti103.png",
+      "id": "Gauge_05",
+      "mounted_on": "Line A header (side thermowell)",
+      "mount": "back",
+      "waypoint": {
+        "x": 2.0,
+        "y": -0.955,
+        "yaw_deg": -90.0,
+        "standoff_m": 1.2,
+        "clearance_m": 1.194
+      }
+    }
+  ],
+  "props": [
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/Header_01",
+      "bbox_min": [
+        -6.0,
+        -2.365,
+        0.255
+      ],
+      "bbox_max": [
+        -3.0,
+        -2.235,
+        0.385
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/SmallPipe_01",
+      "bbox_min": [
+        -6.0,
+        -2.79,
+        0.71
+      ],
+      "bbox_max": [
+        -3.0,
+        -2.71,
+        0.79
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/Header_02",
+      "bbox_min": [
+        -3.0,
+        -2.365,
+        0.255
+      ],
+      "bbox_max": [
+        -0.0,
+        -2.235,
+        0.385
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/SmallPipe_02",
+      "bbox_min": [
+        -3.0,
+        -2.79,
+        0.71
+      ],
+      "bbox_max": [
+        -0.0,
+        -2.71,
+        0.79
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/Header_03",
+      "bbox_min": [
+        -0.0,
+        -2.365,
+        0.255
+      ],
+      "bbox_max": [
+        3.0,
+        -2.235,
+        0.385
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/SmallPipe_03",
+      "bbox_min": [
+        -0.0,
+        -2.79,
+        0.71
+      ],
+      "bbox_max": [
+        3.0,
+        -2.71,
+        0.79
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/Valve",
+      "bbox_min": [
+        -1.591,
+        -2.365,
+        0.255
+      ],
+      "bbox_max": [
+        -1.409,
+        -2.235,
+        0.479
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/Flange_Header_01",
+      "bbox_min": [
+        -6.015,
+        -2.405,
+        0.215
+      ],
+      "bbox_max": [
+        -5.985,
+        -2.195,
+        0.425
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/Flange_Small_01",
+      "bbox_min": [
+        -6.013,
+        -2.82,
+        0.68
+      ],
+      "bbox_max": [
+        -5.987,
+        -2.68,
+        0.82
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/Flange_Header_02",
+      "bbox_min": [
+        -3.015,
+        -2.405,
+        0.215
+      ],
+      "bbox_max": [
+        -2.985,
+        -2.195,
+        0.425
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/Flange_Small_02",
+      "bbox_min": [
+        -3.013,
+        -2.82,
+        0.68
+      ],
+      "bbox_max": [
+        -2.987,
+        -2.68,
+        0.82
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/Flange_Header_03",
+      "bbox_min": [
+        -0.015,
+        -2.405,
+        0.215
+      ],
+      "bbox_max": [
+        0.015,
+        -2.195,
+        0.425
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/Flange_Small_03",
+      "bbox_min": [
+        -0.013,
+        -2.82,
+        0.68
+      ],
+      "bbox_max": [
+        0.013,
+        -2.68,
+        0.82
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/Flange_Header_04",
+      "bbox_min": [
+        2.985,
+        -2.405,
+        0.215
+      ],
+      "bbox_max": [
+        3.015,
+        -2.195,
+        0.425
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/Flange_Small_04",
+      "bbox_min": [
+        2.987,
+        -2.82,
+        0.68
+      ],
+      "bbox_max": [
+        3.013,
+        -2.68,
+        0.82
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/Support_01",
+      "bbox_min": [
+        -5.71,
+        -2.9,
+        -0.0
+      ],
+      "bbox_max": [
+        -5.49,
+        -2.15,
+        0.71
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/Support_02",
+      "bbox_min": [
+        -4.01,
+        -2.9,
+        -0.0
+      ],
+      "bbox_max": [
+        -3.79,
+        -2.15,
+        0.71
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/Support_03",
+      "bbox_min": [
+        -2.31,
+        -2.9,
+        -0.0
+      ],
+      "bbox_max": [
+        -2.09,
+        -2.15,
+        0.71
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/Support_04",
+      "bbox_min": [
+        -0.51,
+        -2.9,
+        -0.0
+      ],
+      "bbox_max": [
+        -0.29,
+        -2.15,
+        0.71
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/Support_05",
+      "bbox_min": [
+        1.39,
+        -2.9,
+        -0.0
+      ],
+      "bbox_max": [
+        1.61,
+        -2.15,
+        0.71
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_A_SteamHeader/Support_06",
+      "bbox_min": [
+        2.64,
+        -2.9,
+        -0.0
+      ],
+      "bbox_max": [
+        2.86,
+        -2.15,
+        0.71
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_B_TankFarm/IBC_Stainless",
+      "bbox_min": [
+        -5.232,
+        2.494,
+        0.0
+      ],
+      "bbox_max": [
+        -3.967,
+        3.606,
+        1.297
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_B_TankFarm/IBC_Caged",
+      "bbox_min": [
+        -2.724,
+        2.472,
+        0.0
+      ],
+      "bbox_max": [
+        -1.676,
+        3.727,
+        1.202
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_B_TankFarm/Drum_01",
+      "bbox_min": [
+        -0.321,
+        2.664,
+        -0.0
+      ],
+      "bbox_max": [
+        0.321,
+        3.321,
+        0.868
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_B_TankFarm/Drum_02",
+      "bbox_min": [
+        0.298,
+        2.59,
+        -0.0
+      ],
+      "bbox_max": [
+        1.208,
+        3.502,
+        0.868
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_B_TankFarm/Drum_03",
+      "bbox_min": [
+        0.105,
+        3.395,
+        0.0
+      ],
+      "bbox_max": [
+        0.695,
+        3.995,
+        0.738
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_B_TankFarm/GaugeStand",
+      "bbox_min": [
+        -1.375,
+        2.175,
+        -0.0
+      ],
+      "bbox_max": [
+        -1.125,
+        2.425,
+        0.37
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_C_Utility/ElectricalCabinet",
+      "bbox_min": [
+        2.358,
+        2.936,
+        0.0
+      ],
+      "bbox_max": [
+        2.897,
+        3.35,
+        1.711
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_C_Utility/RailGuard_Cabinet",
+      "bbox_min": [
+        1.237,
+        2.473,
+        0.0
+      ],
+      "bbox_max": [
+        4.023,
+        2.727,
+        1.009
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_C_Utility/RailGuard_SW",
+      "bbox_min": [
+        -7.027,
+        -4.393,
+        0.0
+      ],
+      "bbox_max": [
+        -6.773,
+        -1.607,
+        1.009
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_C_Utility/RailGuard_NW",
+      "bbox_min": [
+        -7.027,
+        1.607,
+        0.0
+      ],
+      "bbox_max": [
+        -6.773,
+        4.393,
+        1.009
+      ]
+    },
+    {
+      "prim_path": "/World/Props/Line_C_Utility/PipeBundle",
+      "bbox_min": [
+        -5.002,
+        5.055,
+        0.0
+      ],
+      "bbox_max": [
+        2.002,
+        6.145,
+        0.684
+      ]
+    }
+  ],
+  "physics_overrides": [
+    {
+      "colliders": 1,
+      "approximations": {
+        "none": 1
+      },
+      "rigid_bodies_disabled": 0,
+      "deinstanced": 0,
+      "prim_path": "/World/Props/Line_A_SteamHeader/Header_01",
+      "asset_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/Environments/Office/Props/SM_PipeBig_3m.usd",
+      "physics_variant": null
+    },
+    {
+      "colliders": 1,
+      "approximations": {
+        "none": 1
+      },
+      "rigid_bodies_disabled": 0,
+      "deinstanced": 0,
+      "prim_path": "/World/Props/Line_A_SteamHeader/SmallPipe_01",
+      "asset_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/Environments/Office/Props/SM_PipeSmall_3m.usd",
+      "physics_variant": null
+    },
+    {
+      "colliders": 1,
+      "approximations": {
+        "none": 1
+      },
+      "rigid_bodies_disabled": 0,
+      "deinstanced": 0,
+      "prim_path": "/World/Props/Line_A_SteamHeader/Header_02",
+      "asset_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/Environments/Office/Props/SM_PipeBig_3m.usd",
+      "physics_variant": null
+    },
+    {
+      "colliders": 1,
+      "approximations": {
+        "none": 1
+      },
+      "rigid_bodies_disabled": 0,
+      "deinstanced": 0,
+      "prim_path": "/World/Props/Line_A_SteamHeader/SmallPipe_02",
+      "asset_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/Environments/Office/Props/SM_PipeSmall_3m.usd",
+      "physics_variant": null
+    },
+    {
+      "colliders": 1,
+      "approximations": {
+        "none": 1
+      },
+      "rigid_bodies_disabled": 0,
+      "deinstanced": 0,
+      "prim_path": "/World/Props/Line_A_SteamHeader/Header_03",
+      "asset_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/Environments/Office/Props/SM_PipeBig_3m.usd",
+      "physics_variant": null
+    },
+    {
+      "colliders": 1,
+      "approximations": {
+        "none": 1
+      },
+      "rigid_bodies_disabled": 0,
+      "deinstanced": 0,
+      "prim_path": "/World/Props/Line_A_SteamHeader/SmallPipe_03",
+      "asset_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/Environments/Office/Props/SM_PipeSmall_3m.usd",
+      "physics_variant": null
+    },
+    {
+      "colliders": 1,
+      "approximations": {
+        "none": 1
+      },
+      "rigid_bodies_disabled": 0,
+      "deinstanced": 0,
+      "prim_path": "/World/Props/Line_A_SteamHeader/Valve",
+      "asset_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/Environments/Office/Props/SM_ValveBig.usd",
+      "physics_variant": null
+    },
+    {
+      "colliders": 3,
+      "approximations": {
+        "convexHull": 3
+      },
+      "rigid_bodies_disabled": 0,
+      "deinstanced": 3,
+      "prim_path": "/World/Props/Line_B_TankFarm/IBC_Stainless",
+      "asset_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/SimReady/Industrial/Warehouse/Containers/Ibc_Tank_Steel_Stainless_A01/sm_ibcTank_steel_stainless_a01_01.usd",
+      "physics_variant": "none"
+    },
+    {
+      "colliders": 1,
+      "approximations": {
+        "convexHull": 1
+      },
+      "rigid_bodies_disabled": 1,
+      "deinstanced": 1,
+      "prim_path": "/World/Props/Line_B_TankFarm/IBC_Caged",
+      "asset_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/SimReady/Industrial/Warehouse/Containers/Ibc_Tank_A02/sm_ibcTank_a02_01.usd",
+      "physics_variant": "none"
+    },
+    {
+      "colliders": 2,
+      "approximations": {
+        "convexHull": 2
+      },
+      "rigid_bodies_disabled": 0,
+      "deinstanced": 2,
+      "prim_path": "/World/Props/Line_B_TankFarm/Drum_01",
+      "asset_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/SimReady/Industrial/Warehouse/Containers/Drum_Steel_A01/sm_drum_steel_a01_01.usd",
+      "physics_variant": "none"
+    },
+    {
+      "colliders": 2,
+      "approximations": {
+        "convexHull": 2
+      },
+      "rigid_bodies_disabled": 0,
+      "deinstanced": 2,
+      "prim_path": "/World/Props/Line_B_TankFarm/Drum_02",
+      "asset_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/SimReady/Industrial/Warehouse/Containers/Drum_Steel_A01/sm_drum_steel_a01_01.usd",
+      "physics_variant": "none"
+    },
+    {
+      "colliders": 2,
+      "approximations": {
+        "convexHull": 2
+      },
+      "rigid_bodies_disabled": 0,
+      "deinstanced": 2,
+      "prim_path": "/World/Props/Line_B_TankFarm/Drum_03",
+      "asset_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/SimReady/Industrial/Warehouse/Containers/Drum_Steel_A02/sm_drum_steel_a02_01.usd",
+      "physics_variant": "none"
+    },
+    {
+      "colliders": 1,
+      "approximations": {
+        "none": 1
+      },
+      "rigid_bodies_disabled": 0,
+      "deinstanced": 0,
+      "prim_path": "/World/Props/Line_C_Utility/ElectricalCabinet",
+      "asset_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/Environments/Simple_Warehouse/Props/SM_FuseBox_01.usd",
+      "physics_variant": null
+    },
+    {
+      "colliders": 1,
+      "approximations": {
+        "none": 1
+      },
+      "rigid_bodies_disabled": 1,
+      "deinstanced": 1,
+      "prim_path": "/World/Props/Line_C_Utility/RailGuard_Cabinet",
+      "asset_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/SimReady/Industrial/Warehouse/Barriers/Rail_Guard_A09/sm_rail_guard_a09_01.usd",
+      "physics_variant": "none"
+    },
+    {
+      "colliders": 1,
+      "approximations": {
+        "none": 1
+      },
+      "rigid_bodies_disabled": 1,
+      "deinstanced": 1,
+      "prim_path": "/World/Props/Line_C_Utility/RailGuard_SW",
+      "asset_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/SimReady/Industrial/Warehouse/Barriers/Rail_Guard_A09/sm_rail_guard_a09_01.usd",
+      "physics_variant": "none"
+    },
+    {
+      "colliders": 1,
+      "approximations": {
+        "none": 1
+      },
+      "rigid_bodies_disabled": 1,
+      "deinstanced": 1,
+      "prim_path": "/World/Props/Line_C_Utility/RailGuard_NW",
+      "asset_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/SimReady/Industrial/Warehouse/Barriers/Rail_Guard_A09/sm_rail_guard_a09_01.usd",
+      "physics_variant": "none"
+    },
+    {
+      "colliders": 1,
+      "approximations": {
+        "none": 1
+      },
+      "rigid_bodies_disabled": 1,
+      "deinstanced": 1,
+      "prim_path": "/World/Props/Line_C_Utility/PipeBundle",
+      "asset_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/SimReady/Industrial/Warehouse/Equipment/Pipe_Plastic_Gray_B08/sm_pipe_plastic_gray_b08_01.usd",
+      "physics_variant": "none"
+    }
+  ],
+  "floor_physics_material_bound_to": [
+    "/World/Env/SM_floor27/SM_floor02",
+    "/World/Env/SM_floor29/SM_floor02",
+    "/World/Env/SM_floor32/SM_floor02",
+    "/World/Env/SM_floor33/SM_floor02",
+    "/World/Env/SM_floor34/SM_floor02",
+    "/World/Env/SM_floor35/SM_floor02",
+    "/World/Env/SM_floor36/SM_floor02",
+    "/World/Env/SM_floor37/SM_floor02",
+    "/World/Env/SM_floor39/SM_floor02",
+    "/World/Env/SM_floor44/SM_floor02",
+    "/World/Env/SM_floor47/SM_floor02",
+    "/World/Env/SM_floor49/SM_floor02",
+    "/World/Env/SM_floor51/SM_floor02",
+    "/World/Env/SM_floor53/SM_floor02",
+    "/World/Env/SM_floor54/SM_floor02",
+    "/World/Env/SM_floor55/SM_floor02",
+    "/World/Env/SM_floor56/SM_floor02",
+    "/World/Env/SM_floor57/SM_floor02",
+    "/World/Env/SM_floor58/SM_floor02",
+    "/World/Env/SM_floor59/SM_floor02",
+    "/World/Env/SM_floor60/SM_floor02",
+    "/World/Env/SM_floor62/SM_floor02",
+    "/World/Env/SM_floor63/SM_floor02",
+    "/World/Env/SM_floor61/SM_floor02",
+    "/World/Env/GroundPlane/CollisionPlane"
+  ]
+}

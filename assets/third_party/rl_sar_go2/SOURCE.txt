@@ -1,0 +1,37 @@
+rl_sar Go2 robot_lab policy -- provenance
+=========================================
+
+Upstream:  https://github.com/fan-ziqi/rl_sar  (Copyright (c) 2024-2025 Ziqi Fan)
+License:   Apache License 2.0 (LICENSE in this folder; config.yaml/base.yaml carry
+           "SPDX-License-Identifier: Apache-2.0")
+Downloaded 2026-10-14 with curl.exe from raw.githubusercontent.com, pinned to the main-branch
+HEAD commit at download time:
+           376d42c9b128f963ab08579762d5a216a976ce39  (2026-08-16T10:59:47Z, "feat: add explicit default commands")
+URL pattern: https://raw.githubusercontent.com/fan-ziqi/rl_sar/376d42c9b128f963ab08579762d5a216a976ce39/<upstream path>
+
+file          upstream path                         bytes   last upstream commit touching it (GitHub API)          sha256
+policy.pt     policy/go2/robot_lab/policy.pt       769376   afacc139b8963ccd3a6c4357ab27d8775e913a30 2025-10-29  9f14cb95e74ac9e5e30954da0fc0c33eaa41e337852ebed19fcee869279ade0b
+config.yaml   policy/go2/robot_lab/config.yaml       1881   376d42c9b128f963ab08579762d5a216a976ce39 2026-08-16  b8fbd540597b9f326fd4acb83d97d72306fb9bbc8ef84e1d8e350871b4de4e37
+base.yaml     policy/go2/base.yaml                   1381   afacc139b8963ccd3a6c4357ab27d8775e913a30 2025-10-29  78e9b9c2be72544ab334362535ab876630808f87170ec3e38c56f9817cd53d02
+LICENSE       LICENSE                               11342   2599d2ba5bf7f1b50f64efeff406f913979e6a95 2025-01-03  6c18491053290fe1bada9775674b2b14493c4f0fdeab41e013dd5d4c82461d57
+(afacc139 is a "reorganize project structure" move; the policy itself may be older.)
+
+Safety review of policy.pt (done BEFORE any torch.jit.load):
+- Opened as a ZIP; read every code/__torch__/*.py (TorchScript source) and disassembled data.pkl
+  with pickletools (no unpickling).
+- Content: isaaclab_rl.rsl_rl.exporter._TorchPolicyExporter = Identity normalizer +
+  Sequential(Linear 45->512, ELU, Linear 512->256, ELU, Linear 256->128, ELU, Linear 128->12).
+  Ops used: torch.linear, torch.elu. No file/network/os/subprocess/eval calls.
+- data.pkl globals: only torch module classes, collections.OrderedDict, torch.FloatStorage,
+  torch._utils._rebuild_tensor_v2. debug_pkl files: only torch.jit._pickle.build_intlist.
+- The runner re-checks the sha256 above before every load (robot_lab_go2.MODEL_SHA256).
+
+Local files (written for this project, not from upstream):
+- env_isaacsim.yaml       kp 20 variant (rl_sar deployment rl_kp), A/B test        sha256 0356d2e938ba17896195ed42872142fb6bbbd24fecff80614e996a62e6e0407a
+- env_isaacsim_kp25.yaml  DEFAULT runner env config, kp 25 = robot_lab training    sha256 592c3e378c9be08024a4ca20393c87b9add9bbe6dfee66b2c9f27f12e63aafa5
+                          value (robot_lab UNITREE_GO2_CFG DCMotor: kp 25, kd 0.5, 23.5 N*m, sat 23.5,
+                          30 rad/s; same in robot_lab v2.1, v2.2.1, main; read on GitHub 2026-10-14)
+  Both are trimmed copies of Isaac Sim 6.1 /Isaac/Samples/Policies/go2/physx_env.yaml with the
+  robot_lab values substituted (see the comments inside).
+- SOURCE.txt              this file
+Code using these files: tools/isaac/policies/robot_lab_go2.py

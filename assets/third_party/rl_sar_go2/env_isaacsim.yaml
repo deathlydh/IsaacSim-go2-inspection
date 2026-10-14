@@ -1,0 +1,141 @@
+# Isaac Sim deployment env config for the robot_lab Go2 policy (rl_sar policy/go2/robot_lab).
+#
+# WHAT: the "PolicyEnvConfig" file that isaacsim.robot.policy.examples.RobotPolicyRunner reads to
+#       configure the simulation side of a policy: physics step, decimation, robot spawn props,
+#       default joint pose, actuator model (gains, torque limits) and the foot friction event.
+# WHY:  the bundled NVIDIA Go2 config (/Isaac/Samples/Policies/go2/physx_env.yaml) describes a
+#       DIFFERENT policy (other default pose, kp 25, 0.25 action scale). This file is a trimmed copy
+#       of it with only the blocks the runner reads, and with the robot_lab values substituted.
+#
+# The observation/action interface (45 obs / 12 actions) is NOT read from here: it is authored in
+# tools/isaac/policies/robot_lab_go2.py (PolicySpec binding hook) from config.yaml + base.yaml.
+#
+# Provenance of every value:
+#   [rl_sar]   = rl_sar config.yaml / base.yaml shipped next to this file (deployment settings)
+#   [bundled]  = copied unchanged from the bundled Isaac Sim 6.1 go2 physx_env.yaml
+#   [robot_lab]= robot_lab TRAINING value read on GitHub (fan-ziqi/robot_lab, UNITREE_GO2_CFG in
+#                source/robot_lab/robot_lab/assets/unitree.py, same in v2.1, v2.2.1 and main;
+#                CommandsCfg in .../locomotion/velocity/velocity_env_cfg.py), not in the downloads
+#   [assumed]  = value NOT contained in any source read (see notes)
+#
+# THIS IS THE kp 20 VARIANT (rl_sar's deployment rl_kp), kept for an A/B test. The DEFAULT used by
+# robot_lab_go2.build_runner() is env_isaacsim_kp25.yaml (kp 25 = robot_lab training value);
+# the two files are identical except actuator stiffness.
+
+sim:
+  physics_prim_path: /physicsScene
+  dt: 0.005                     # [rl_sar] base.yaml dt: physics step 200 Hz
+  render_interval: 4            # [bundled]
+  gravity: [0.0, 0.0, -9.81]    # [bundled]
+  # NOTE: keep this "physx" block (and do not add "sim.physics"): the runner then treats
+  # scene.robot.init_state.rot below as WXYZ (legacy convention). The PolicySpec also pins the
+  # spawn orientation to identity, so the robot is never spawned upside down by accident.
+  physx:                        # [bundled] solver settings used at training time (informational:
+    solver_type: 1              #  the runner does not change the live PhysicsScene from them)
+    min_position_iteration_count: 1
+    max_position_iteration_count: 255
+    min_velocity_iteration_count: 0
+    max_velocity_iteration_count: 255
+    enable_ccd: false
+    enable_stabilization: true
+    bounce_threshold_velocity: 0.5
+    friction_offset_threshold: 0.04
+    friction_correlation_distance: 0.025
+  physics_material:             # [bundled] ground material at training time (informational)
+    static_friction: 1.0
+    dynamic_friction: 1.0
+    restitution: 0.0
+    friction_combine_mode: multiply
+    restitution_combine_mode: multiply
+
+decimation: 4                   # [rl_sar] base.yaml decimation: policy runs every 4 physics steps (50 Hz)
+episode_length_s: 20.0          # [bundled] unused by deployment
+
+scene:
+  robot:
+    spawn:
+      # [bundled] same Go2 USD as the bundled spec. The PolicySpec passes this URL explicitly too
+      # (get_go2_spec().usd_path), so it wins over this line if the assets root ever changes.
+      usd_path: https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/IsaacLab/Robots/Unitree/Go2/go2.usd
+      rigid_props:              # [bundled] (robot_lab uses the same Isaac Lab defaults)
+        rigid_body_enabled: null
+        kinematic_enabled: null
+        disable_gravity: false
+        linear_damping: 0.0
+        angular_damping: 0.0
+        max_linear_velocity: 1000.0
+        max_angular_velocity: 1000.0
+        max_depenetration_velocity: 1.0
+        max_contact_impulse: null
+        enable_gyroscopic_forces: null
+        retain_accelerations: false
+        solver_position_iteration_count: null
+        solver_velocity_iteration_count: null
+        sleep_threshold: null
+        stabilization_threshold: null
+      articulation_props:       # [bundled]
+        articulation_enabled: null
+        enabled_self_collisions: false
+        solver_position_iteration_count: 4
+        solver_velocity_iteration_count: 0
+        sleep_threshold: null
+        stabilization_threshold: null
+        fix_root_link: null
+      joint_drive_props: null
+    init_state:
+      pos: [0.0, 0.0, 0.4]      # [bundled] only a fallback: build_runner() passes its own position
+      rot: [1.0, 0.0, 0.0, 0.0] # WXYZ identity (see the note in sim.physx)
+      lin_vel: [0.0, 0.0, 0.0]
+      ang_vel: [0.0, 0.0, 0.0]
+      # [rl_sar] default_dof_pos [0.0, 0.8, -1.5] for every leg. This is BOTH the reset pose and
+      # the action offset (target = default + scale * action) and the joint_pos observation offset.
+      # Differs from the bundled policy (hips +-0.1, rear thighs 1.0).
+      joint_pos:
+        .*_hip_joint: 0.0
+        .*_thigh_joint: 0.8
+        .*_calf_joint: -1.5
+      joint_vel:
+        .*: 0.0
+    actuators:
+      base_legs:
+        # Explicit DC-motor model, as in Isaac Lab training: the runner zeroes the PhysX drive gains
+        # and applies torque = clip(kp*(q_target - q) - kd*qd) itself on every physics step, with a
+        # torque-speed curve (saturation_effort at 0 rad/s falling to 0 at velocity_limit).
+        class_type: isaaclab.actuators.actuator_pd:DCMotor
+        joint_names_expr:
+        - .*_hip_joint
+        - .*_thigh_joint
+        - .*_calf_joint
+        effort_limit: 23.5      # [rl_sar] torque_limits 23.5 for all 12 joints
+        saturation_effort: 23.5 # [robot_lab] DCMotorCfg saturation_effort 23.5
+        velocity_limit: 30.0    # [robot_lab] DCMotorCfg velocity_limit 30.0 rad/s
+        stiffness: 20.0         # A/B VARIANT: [rl_sar] rl_kp 20 (robot_lab trained with 25 -> kp25 file)
+        damping: 0.5            # [robot_lab] DCMotorCfg damping 0.5 (= rl_sar rl_kd)
+        armature: null          # keep USD value [bundled]
+        friction: 0.0           # [bundled]
+
+events:
+  # [bundled] foot/body friction applied by runner.apply_scene_properties() (optional call, before
+  # Play). The runner uses the midpoint of each range. robot_lab's own randomization ranges are
+  # not in the downloaded files [assumed: these deterministic values are fine on flat ground].
+  physics_material:
+    func: isaaclab.envs.mdp.events:randomize_rigid_body_material
+    mode: startup
+    params:
+      asset_cfg:
+        name: robot
+        body_names: .*
+      static_friction_range: [0.8, 0.8]
+      dynamic_friction_range: [0.6, 0.6]
+      restitution_range: [0.0, 0.0]
+      num_buckets: 64
+
+commands:
+  # Documentation only (the runner does not read it). robot_lab's training command ranges are NOT
+  # in the downloaded config.yaml [robot_lab: velocity_env_cfg.py ranges below]. Python mirror:
+  # robot_lab_go2.COMMAND_LIMITS / KEYBOARD_SCALE.
+  base_velocity:
+    ranges:
+      lin_vel_x: [-1.0, 1.0]
+      lin_vel_y: [-1.0, 1.0]
+      ang_vel_z: [-1.0, 1.0]
