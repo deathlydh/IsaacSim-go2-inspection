@@ -20,10 +20,18 @@
 
 ## Запуск Go2 в нашей сцене
 
-1. Двойной клик `D:\isaacsim\isaac-sim.claude.bat`, дождаться интерфейса.
-2. Отправить скрипт (это делает Claude):
-   `python -I D:\isaacsim\skills\isaac-sim-remote\scripts\isaacsim_send.py --file tools\isaac\start_go2.py`
-3. Кликнуть во вьюпорт. Стрелки — вперёд/назад/вбок, N/M — поворот.
+**Самому, одной кнопкой:** двойной клик `D:\go2-inspection\start_go2.bat` в Проводнике.
+Isaac Sim откроется, через несколько секунд после появления интерфейса сам загрузит сцену и робота.
+Кликнуть во вьюпорт (окно с 3D-сценой). Стрелки — вперёд/назад/вбок, N/M — поворот.
+
+**Вместе с Claude:** двойной клик `D:\isaacsim\isaac-sim.claude.bat`, затем Claude отправляет
+`tools\isaac\start_go2.py` через python_server. (`start_go2.bat` тоже подходит — сервер в нём включён.)
+
+**Перезапустить робота без перезапуска Isaac Sim:** Window → Script Editor → File → Open
+`tools\isaac\run_in_kit.py` → Run (Ctrl+Enter).
+
+**Только посмотреть/поправить сцену:** File → Open → `scenes\inspection.usd` (робота там нет — он
+добавляется скриптом). Изменения — File → Save.
 
 | Скрипт | Что делает |
 |---|---|
