@@ -1,0 +1,4 @@
+# Standalone Python only. Do not install into Isaac Sim/Kit.
+numpy==2.5.2
+opencv-python==4.10.0.84
+Pillow==12.2.0

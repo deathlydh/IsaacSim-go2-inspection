@@ -1,8 +1,33 @@
+# Python
 __pycache__/
-*.pyc
-# ROS 2 workspace build artifacts
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+env/
+
+# Build artifacts (ROS 2 / workspace)
 build/
 install/
 log/
-# large captures
+out/
+bin/
+.vs/
+*.user
+*.suo
+compile_commands.json
+
+# Local inspection reports & heavy evaluation dumps
+reports/
+
+# Heavy local simulation datasets
+data/gauges/
+
+# Large screen captures & recordings
 shots/*.mp4
+
+# Editor & OS temporary files
+.DS_Store
+Thumbs.db
+~$*.docx
+*.tmp

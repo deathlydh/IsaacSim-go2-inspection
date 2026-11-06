@@ -74,6 +74,7 @@ try:
 except Exception:
     pass
 import go2_camera
+import command_control
 import policies.nvidia_rough_go2
 import policies.robot_lab_go2
 
@@ -137,7 +138,7 @@ class Go2Session:
             carb.log_warn(f"Go2Session: apply_scene_properties skipped: {error}")
         self._ids.append(SimulationManager.register_callback(self._on_physics_step, IsaacEvents.POST_PHYSICS_STEP))
         self._ids.append(SimulationManager.register_callback(self._on_stop, IsaacEvents.TIMELINE_STOP))
-        self._key_sub = self._input.subscribe_to_keyboard_events(self._keyboard, self._on_key)
+        command_control.install_control(self)
         if with_camera:
             self.camera = FrontCamera.create(robot_path=ROBOT_PATH, window=with_window)
         # If the stage is replaced (File > Open/New or a re-run), release everything BEFORE teardown:
@@ -151,19 +152,31 @@ class Go2Session:
     def _on_physics_step(self, dt, context):
         runner = self.runner
         if runner is None or runner.articulation is None or self.failed:
+            self.command.fill(0.0)
             return
-        if not runner.articulation.is_physics_tensor_entity_valid():
+        valid = runner.articulation.is_physics_tensor_entity_valid()
+        if getattr(getattr(self, "control", None), "source", "manual") == "route" and (not valid or not self.ready):
+            # A route must stop rather than restart_from_default_state (which
+            # would reset the robot pose and invalidate the verified segment).
+            self.failed = True
+            self.command.fill(0.0)
+            carb.log_error("Go2Session: physics unavailable during route; refusing reset")
+            return
+        if not valid:
             self.ready = False
         command = np.clip(self.command, -COMMAND_LIMITS, COMMAND_LIMITS)
-        command = self._hold_heading(runner, command).tolist()
         try:
             if self.ready:
-                runner.step(dt, command)
+                runner.step(dt, self._hold_heading(runner, command).tolist())
             else:
-                runner.restart_from_default_state(command)
+                # Reset changes the pose. A heading sampled before the reset
+                # belongs to the previous episode and can cause an unsolicited turn.
+                self._heading_target = None
+                runner.restart_from_default_state(command.tolist())
                 self.ready = True
         except Exception as error:  # a physics callback must not raise
             self.failed = True
+            self.command.fill(0.0)
             carb.log_error(f"Go2Session: policy failed, stopping: {error}")
 
     def _hold_heading(self, runner, command):
@@ -186,24 +199,21 @@ class Go2Session:
         return command
 
     def _on_stop(self, event):
+        if getattr(self, "control", None) is not None:
+            self.control.cancel()
         self._heading_target = None
         self.ready = False
         self.failed = False
         self.command.fill(0.0)
 
     def _on_key(self, event, *args, **kwargs):
-        # CHAR events carry the typed character as a plain str instead of a KeyboardInput.
-        key = getattr(event.input, "name", None)
-        delta = self.keymap.get(key) if key is not None else None
-        if delta is not None:
-            if event.type == carb.input.KeyboardEventType.KEY_PRESS:
-                self.command += np.asarray(delta, dtype=np.float32)
-            elif event.type == carb.input.KeyboardEventType.KEY_RELEASE:
-                self.command -= np.asarray(delta, dtype=np.float32)
-        return True
+        return self.control.on_key(event, *args, **kwargs)
 
     def close(self):
         """Release camera first, then callbacks, keyboard and runner. Idempotent; never touches the timeline."""
+        if getattr(self, "control", None) is not None:
+            self.control.cancel()
+            self.control._timeline_sub = None
         self._stage_closing_sub = None
         if self.camera is not None:
             self.camera.close()

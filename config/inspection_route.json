@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "reports_root": "../reports",
+  "robot_envelope": {
+    "radius_m": 0.5,
+    "tracking_margin_m": 0.1,
+    "z_min_m": 0.08,
+    "z_max_m": 0.9,
+    "description": "Orientation independent radius 0.50 m for body/feet + 0.10 m guard margin. Continuous clearance checks stop on guard boundary. Branch returns keep heading and reverse out before rotating on centreline."
+  },
+  "motion": {
+    "max_speed_mps": 0.5,
+    "position_gain": 1.6,
+    "position_tolerance_m": 0.15,
+    "yaw_tolerance_deg": 3.0,
+    "timeout_s": 110.0,
+    "no_progress_s": 22.0,
+    "progress_m": 0.02,
+    "max_tilt_deg": 30.0,
+    "min_height_m": 0.16,
+    "max_height_m": 0.65,
+    "settle_timeout_s": 22.0,
+    "settle_window_s": 1.0,
+    "settle_position_m": 0.035,
+    "settle_yaw_deg": 2.0,
+    "frame_timeout_s": 8.0
+  },
+  "site_path": "../sites/factory_hall/site.json"
+}

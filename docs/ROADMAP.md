@@ -1,5 +1,9 @@
 # Roadmap — Go2 inspection case
 
+> Актуальный рабочий план с 2026-11-05: [TODO.md](TODO.md).
+> Этот документ сохранён как исторический план первоначального демонстратора.
+> Задание для следующей модели: [IMPLEMENTATION_PROMPT.md](IMPLEMENTATION_PROMPT.md).
+
 Status on 2026-10-15 (commit bf31482): Isaac Sim 6.1 on Windows 10 works; factory hall with 5
 procedural gauges (`scenes/factory_hall.usda`, ground truth in `factory_hall_meta.json`); Go2 with
 robot_lab gait + heading hold; front camera 1280x720 @ 10 Hz; `goto_gauge.py` walks to a gauge

@@ -92,6 +92,7 @@ import os
 import re
 import struct
 import sys
+import time
 import weakref
 import zlib
 
@@ -139,7 +140,7 @@ def _write_png(path: str, image: np.ndarray) -> None:
     try:
         from PIL import Image
 
-        Image.fromarray(image, mode="RGB").save(path)
+        Image.fromarray(image).save(path, format="PNG")
         return
     except ImportError:
         pass
@@ -150,8 +151,12 @@ def _write_png(path: str, image: np.ndarray) -> None:
         return struct.pack(">I", len(data)) + tag + data + struct.pack(">I", zlib.crc32(tag + data) & 0xFFFFFFFF)
 
     header = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)  # 8-bit RGB
-    with open(path, "wb") as f:
-        f.write(b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", header) + chunk(b"IDAT", zlib.compress(raw, 6)) + chunk(b"IEND", b""))
+    encoded = b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", header) + chunk(b"IDAT", zlib.compress(raw, 6)) + chunk(b"IEND", b"")
+    if hasattr(path, "write"):
+        path.write(encoded)
+    else:
+        with open(path, "wb") as f:
+            f.write(encoded)
 
 
 class FrontCamera:
@@ -302,27 +307,31 @@ class FrontCamera:
             return None
         return np.ascontiguousarray(data).reshape(self.resolution[1], self.resolution[0]).astype(np.float32, copy=False)
 
-    async def wait_for_rgb(self, max_updates: int = 120, fresh: bool = False) -> np.ndarray | None:
-        """Await app updates until an RGB frame is available (or ``max_updates`` frames pass).
+    async def wait_for_rgb(self, max_updates: int = 120, fresh: bool = False,
+                           timeout_s: float = 8.0) -> np.ndarray | None:
+        """Return a copied RGB frame, or None on timeout. Never fall back to stale data.
 
-        Args:
-            max_updates: Give up after this many app updates and return whatever get_rgb() returns.
-            fresh: If True, wait for a frame rendered AFTER this call (e.g. after the robot stopped),
-                not the last one already in the buffer.
-
-        Does not start the timeline; if it is not playing this returns None (or a stale frame) at the end.
+        With fresh=True require two sensor render completions after the call, plus an
+        app update for the annotator copy. The extra render avoids the preceding
+        render's delayed annotation being mistaken for a fresh frame. Does not
+        modify the timeline or render-product lifecycle.
         """
         app = omni.kit.app.get_app()
         start_count = self.render_count
+        deadline = time.monotonic() + timeout_s
         for _ in range(max_updates):
-            if not fresh or self.render_count > start_count:
+            if time.monotonic() >= deadline:
+                return None
+            if not fresh or self.render_count >= start_count + 2:
                 if fresh:
                     await app.next_update_async()  # the annotator copies the frame one update after rendering
+                    if time.monotonic() >= deadline:
+                        return None
                 image = self.get_rgb()
                 if image is not None:
-                    return image
+                    return image.copy()
             await app.next_update_async()
-        return self.get_rgb()
+        return None
 
     # NOTE: there is deliberately no pause()/resume(). Disabling the sensor render product's updates
     # (HydraTexture.set_updates_enabled(False)) destroys its GPU buffers while the rgb annotator still points
@@ -335,14 +344,18 @@ class FrontCamera:
         """How many frames the sensor has rendered since create() (counts render-completion events)."""
         return self._render_count
 
-    def save_png(self, path: str) -> bool:
-        """Save the latest RGB frame to ``path`` (folders are created). Returns False if there is no frame yet."""
-        image = self.get_rgb()
+    def save_png(self, path: str, image: np.ndarray | None = None, *, overwrite: bool = False) -> bool:
+        """Save the supplied RGB array, or latest buffer when omitted. Refuse overwrite by default."""
+        if image is None:
+            image = self.get_rgb()
         if image is None:
             return False
+        if image.dtype != np.uint8 or image.ndim != 3 or image.shape[2] != 3:
+            raise ValueError("expected RGB uint8 HxWx3")
         folder = os.path.dirname(os.path.abspath(path))
         os.makedirs(folder, exist_ok=True)
-        _write_png(path, image)
+        with open(path, "wb" if overwrite else "xb") as stream:
+            _write_png(stream, image)
         return True
 
     def intrinsics(self) -> dict:

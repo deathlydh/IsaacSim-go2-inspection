@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "site_id": "factory_hall",
+  "scene": "../../scenes/factory_hall.usda",
+  "map": {
+    "id": "factory_hall_static_v1",
+    "frame_id": "factory_map",
+    "units": "m",
+    "z_up": true,
+    "localization": "simulator_oracle",
+    "source": "../../scenes/factory_hall.usda",
+    "type": "usd_static_colliders_oracle",
+    "world_from_map": {
+      "translation_m": [
+        0,
+        0,
+        0
+      ],
+      "yaw_deg": 0
+    }
+  },
+  "navigation": {
+    "adapter": "known_aisle",
+    "origin_xy": [
+      0,
+      0
+    ],
+    "yaw_deg": 0,
+    "along_range": [
+      -9.0,
+      8.5
+    ],
+    "cross_range": [
+      -1.607,
+      1.607
+    ]
+  },
+  "stations": [
+    {
+      "id": "station_Gauge_01",
+      "gauge_ids": [
+        "Gauge_01"
+      ]
+    },
+    {
+      "id": "station_Gauge_02",
+      "gauge_ids": [
+        "Gauge_02"
+      ]
+    },
+    {
+      "id": "station_Gauge_03",
+      "gauge_ids": [
+        "Gauge_03"
+      ]
+    },
+    {
+      "id": "station_Gauge_04",
+      "gauge_ids": [
+        "Gauge_04"
+      ]
+    },
+    {
+      "id": "station_Gauge_05",
+      "gauge_ids": [
+        "Gauge_05"
+      ]
+    }
+  ],
+  "gauges": [
+    {
+      "id": "Gauge_01",
+      "station_id": "station_Gauge_01",
+      "label": "PI-101",
+      "type": "analog",
+      "inspection_pose": {
+        "x": -4.6,
+        "y": -1.085,
+        "yaw_deg": -90.0,
+        "standoff_m": 1.2,
+        "clearance_m": 1.15
+      },
+      "calibration": {
+        "vmin": 0.0,
+        "vmax": 10.0,
+        "unit": "bar",
+        "start_angle_deg": 225.0,
+        "direction": "clockwise",
+        "sweep_deg": 270.0
+      },
+      "simulation_prim_path": "/World/Gauges/Gauge_01"
+    },
+    {
+      "id": "Gauge_02",
+      "station_id": "station_Gauge_02",
+      "label": "PI-102",
+      "type": "analog",
+      "inspection_pose": {
+        "x": 0.9,
+        "y": -1.076,
+        "yaw_deg": -90.0,
+        "standoff_m": 1.2,
+        "clearance_m": 1.159
+      },
+      "calibration": {
+        "vmin": 0.0,
+        "vmax": 16.0,
+        "unit": "bar",
+        "start_angle_deg": 225.0,
+        "direction": "clockwise",
+        "sweep_deg": 270.0
+      },
+      "simulation_prim_path": "/World/Gauges/Gauge_02"
+    },
+    {
+      "id": "Gauge_03",
+      "station_id": "station_Gauge_03",
+      "label": "PI-201",
+      "type": "analog",
+      "inspection_pose": {
+        "x": -4.6,
+        "y": 1.232,
+        "yaw_deg": 90.0,
+        "standoff_m": 1.2,
+        "clearance_m": 1.194
+      },
+      "calibration": {
+        "vmin": 0.0,
+        "vmax": 160.0,
+        "unit": "psi",
+        "start_angle_deg": 225.0,
+        "direction": "clockwise",
+        "sweep_deg": 270.0
+      },
+      "simulation_prim_path": "/World/Gauges/Gauge_03"
+    },
+    {
+      "id": "Gauge_04",
+      "station_id": "station_Gauge_04",
+      "label": "PI-202",
+      "type": "analog",
+      "inspection_pose": {
+        "x": -1.25,
+        "y": 1.085,
+        "yaw_deg": 90.0,
+        "standoff_m": 1.2,
+        "clearance_m": 1.09
+      },
+      "calibration": {
+        "vmin": -1.0,
+        "vmax": 0.0,
+        "unit": "bar",
+        "start_angle_deg": 225.0,
+        "direction": "clockwise",
+        "sweep_deg": 270.0
+      },
+      "simulation_prim_path": "/World/Gauges/Gauge_04"
+    },
+    {
+      "id": "Gauge_05",
+      "station_id": "station_Gauge_05",
+      "label": "TI-103",
+      "type": "analog",
+      "inspection_pose": {
+        "x": 2.0,
+        "y": -0.955,
+        "yaw_deg": -90.0,
+        "standoff_m": 1.2,
+        "clearance_m": 1.194
+      },
+      "calibration": {
+        "vmin": 0.0,
+        "vmax": 250.0,
+        "unit": "°C",
+        "start_angle_deg": 225.0,
+        "direction": "clockwise",
+        "sweep_deg": 270.0
+      },
+      "simulation_prim_path": "/World/Gauges/Gauge_05"
+    }
+  ],
+  "route": [
+    "Gauge_01",
+    "Gauge_03",
+    "Gauge_04",
+    "Gauge_02",
+    "Gauge_05"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "algorithm_version": "radial_dark_v1",
+  "hough_param2": 24,
+  "min_radius_px": 14,
+  "min_white_fraction": 0.56,
+  "min_ray_coverage": 0.62,
+  "min_peak_margin": 0.12,
+  "angle_step_deg": 0.5,
+  "min_confidence": 0.60
+}

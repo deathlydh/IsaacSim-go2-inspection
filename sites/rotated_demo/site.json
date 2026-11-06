@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "site_id": "rotated_demo",
+  "offline_only": true,
+  "scene": "offline_only.usda",
+  "map": {
+    "id": "rotated_static_v1",
+    "frame_id": "demo_map",
+    "units": "m",
+    "z_up": true,
+    "localization": "mock"
+  },
+  "navigation": {
+    "adapter": "known_aisle",
+    "origin_xy": [
+      10,
+      20
+    ],
+    "yaw_deg": 90,
+    "along_range": [
+      -5,
+      10
+    ],
+    "cross_range": [
+      -2,
+      2
+    ]
+  },
+  "stations": [
+    {
+      "id": "S-1",
+      "gauge_ids": [
+        "R-1"
+      ]
+    },
+    {
+      "id": "S-2",
+      "gauge_ids": [
+        "R-2"
+      ]
+    },
+    {
+      "id": "S-3",
+      "gauge_ids": [
+        "R-3"
+      ]
+    },
+    {
+      "id": "S-4",
+      "gauge_ids": [
+        "R-4"
+      ]
+    },
+    {
+      "id": "S-5",
+      "gauge_ids": [
+        "R-5"
+      ]
+    },
+    {
+      "id": "S-6",
+      "gauge_ids": [
+        "R-6"
+      ]
+    },
+    {
+      "id": "S-7",
+      "gauge_ids": [
+        "R-7"
+      ]
+    }
+  ],
+  "gauges": [
+    {
+      "id": "R-1",
+      "station_id": "S-1",
+      "type": "analog",
+      "inspection_pose": {
+        "x": 11,
+        "y": 20,
+        "yaw_deg": 180
+      },
+      "calibration": {
+        "vmin": -1,
+        "vmax": 1,
+        "unit": "bar",
+        "start_angle_deg": 225,
+        "direction": "clockwise",
+        "sweep_deg": 270
+      }
+    },
+    {
+      "id": "R-2",
+      "station_id": "S-2",
+      "type": "analog",
+      "inspection_pose": {
+        "x": 9,
+        "y": 21,
+        "yaw_deg": 0
+      },
+      "calibration": {
+        "vmin": -1,
+        "vmax": 1,
+        "unit": "bar",
+        "start_angle_deg": 225,
+        "direction": "clockwise",
+        "sweep_deg": 270
+      }
+    },
+    {
+      "id": "R-3",
+      "station_id": "S-3",
+      "type": "analog",
+      "inspection_pose": {
+        "x": 11,
+        "y": 22,
+        "yaw_deg": 180
+      },
+      "calibration": {
+        "vmin": -1,
+        "vmax": 1,
+        "unit": "bar",
+        "start_angle_deg": 225,
+        "direction": "clockwise",
+        "sweep_deg": 270
+      }
+    },
+    {
+      "id": "R-4",
+      "station_id": "S-4",
+      "type": "analog",
+      "inspection_pose": {
+        "x": 9,
+        "y": 23,
+        "yaw_deg": 0
+      },
+      "calibration": {
+        "vmin": -1,
+        "vmax": 1,
+        "unit": "bar",
+        "start_angle_deg": 225,
+        "direction": "clockwise",
+        "sweep_deg": 270
+      }
+    },
+    {
+      "id": "R-5",
+      "station_id": "S-5",
+      "type": "analog",
+      "inspection_pose": {
+        "x": 11,
+        "y": 24,
+        "yaw_deg": 180
+      },
+      "calibration": {
+        "vmin": -1,
+        "vmax": 1,
+        "unit": "bar",
+        "start_angle_deg": 225,
+        "direction": "clockwise",
+        "sweep_deg": 270
+      }
+    },
+    {
+      "id": "R-6",
+      "station_id": "S-6",
+      "type": "analog",
+      "inspection_pose": {
+        "x": 9,
+        "y": 25,
+        "yaw_deg": 0
+      },
+      "calibration": {
+        "vmin": -1,
+        "vmax": 1,
+        "unit": "bar",
+        "start_angle_deg": 225,
+        "direction": "clockwise",
+        "sweep_deg": 270
+      }
+    },
+    {
+      "id": "R-7",
+      "station_id": "S-7",
+      "type": "analog",
+      "inspection_pose": {
+        "x": 11,
+        "y": 26,
+        "yaw_deg": 180
+      },
+      "calibration": {
+        "vmin": -1,
+        "vmax": 1,
+        "unit": "bar",
+        "start_angle_deg": 225,
+        "direction": "clockwise",
+        "sweep_deg": 270
+      }
+    }
+  ],
+  "route": [
+    "R-1",
+    "R-2",
+    "R-3",
+    "R-4",
+    "R-5",
+    "R-6",
+    "R-7"
+  ]
+}

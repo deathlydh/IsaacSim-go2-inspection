@@ -13,6 +13,10 @@ if s is None:
 else:
     print("policy:", s.policy, "| ready:", s.ready, "| failed:", s.failed, "| command:", s.command.tolist(),
           "| heading target:", s._heading_target, "| callbacks:", len(s._ids), "| runner:", s.runner is not None)
+    control = getattr(s, "control", None)
+    print("command source:", getattr(control, "source", "legacy_manual"),
+          "| route active:", getattr(control, "owner", None) is not None,
+          "| policy reset guard:", getattr(s.runner, "_inspection_reset_guard", False))
     if s.runner is not None and s.runner.articulation is not None:
         pos, quat = s.runner.articulation.get_world_poses()
         print("pose:", np.asarray(pos.numpy() if hasattr(pos, "numpy") else pos).round(3).tolist(),
