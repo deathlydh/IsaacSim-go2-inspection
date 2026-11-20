@@ -5,6 +5,7 @@ mode=$1
 output=$2
 export GO2_WINDOWS_PYTHON=$3
 isaac_dir=$4
+viewer=${5:-}
 export GO2_KIT_SEND="$isaac_dir/skills/isaac-sim-remote/scripts/isaacsim_send.py"
 export ROS_DOMAIN_ID=42
 export FASTRTPS_DEFAULT_PROFILES_FILE="$PWD/tools/ros/go2_fastdds_udp.xml"
@@ -51,6 +52,23 @@ terminate() {
     done
     kill -KILL "$pid" 2>/dev/null || true
     wait "$pid" 2>/dev/null || true
+}
+start_rviz() {
+    local config=$1
+    local action_log=${2:-}
+    if ! command -v rviz2 >/dev/null || [[ -z "$DISPLAY" && -z "$WAYLAND_DISPLAY" ]]; then
+        echo 'RViz needs ros-humble-rviz2 and a graphical WSL session.' >&2
+        return 1
+    fi
+    (
+        # Let the Nav2 action client connect before RViz adds DDS participants.
+        if [[ -n "$action_log" ]]; then
+            until grep -q 'Goal accepted with ID:' "$action_log" 2>/dev/null; do sleep 0.2; done
+        fi
+        if [[ -n "$DISPLAY" ]]; then export QT_QPA_PLATFORM=xcb; fi
+        exec rviz2 -d "$config" --ros-args -p use_sim_time:=true
+    ) >"$output/rviz.log" 2>&1 9>&- &
+    rviz_pid=$!
 }
 demo_started=0
 obstacle_added=0
@@ -141,10 +159,7 @@ if [[ "$mode" == rviz ]]; then
         exit 1
     fi
     echo 'Opening RViz. Close its window to end this session. Drive manually in Isaac.'
-    if [[ -n "$DISPLAY" ]]; then export QT_QPA_PLATFORM=xcb; fi
-    rviz2 -d tools/ros/go2_navigation.rviz --ros-args -p use_sim_time:=true \
-        >"$output/rviz.log" 2>&1 9>&- &
-    rviz_pid=$!
+    start_rviz tools/ros/go2_navigation.rviz
     if ! wait "$rviz_pid"; then
         echo "RViz exited with an error. See $output/rviz.log." >&2
         exit 1
@@ -206,6 +221,13 @@ case "$mode" in
         ;;
     *) exit 2 ;;
 esac
+if [[ "$viewer" == --rviz ]]; then
+    if start_rviz tools/ros/go2_mission.rviz "$output/nav2/action.log"; then
+        echo "RViz opens after Nav2 accepts the goal. Viewer log: $output/rviz.log"
+    else
+        echo 'Navigation continues without RViz.' >&2
+    fi
+fi
 echo "Running $mode. Esc in the Isaac viewport returns control to manual."
 demo_started=1
 bash tools/ros/go2_nav2.sh demo --timeout 240 --output "$output/nav2" "$@"

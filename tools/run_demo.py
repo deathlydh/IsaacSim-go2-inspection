@@ -32,7 +32,7 @@ def run_mapping(command, output):
             return 130
 
 
-def run(mode):
+def run(mode, *, rviz=False):
     isaac = Path(os.environ.get("GO2_ISAAC_DIR", "D:/isaacsim")).resolve()
     client = isaac / "skills/isaac-sim-remote/scripts/isaacsim_send.py"
     if not client.is_file():
@@ -54,6 +54,8 @@ def run(mode):
     print(f"Results: {output}", flush=True)
     command = [*wsl, "bash", f"{root_wsl}/tools/ros/demo_episode.sh", mode,
                f"{root_wsl}/reports/demo/{run_id}", python_wsl, isaac.as_posix()]
+    if rviz:
+        command.append("--rviz")
     if mode == "mapping":
         return run_mapping(command, output)
     status = subprocess.run(command, cwd=ROOT).returncode
@@ -100,8 +102,12 @@ def run(mode):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("mode", choices=["nav", "cancel", "obstacle", "mapping", "rviz"])
+    parser.add_argument("--rviz", action="store_true", help="open a viewer for the Nav2 run")
+    args = parser.parse_args()
+    if args.rviz and args.mode not in ("nav", "cancel", "obstacle"):
+        parser.error("--rviz is only available with nav, cancel or obstacle")
     try:
-        raise SystemExit(run(parser.parse_args().mode))
+        raise SystemExit(run(args.mode, rviz=args.rviz))
     except (OSError, RuntimeError, ImportError, subprocess.SubprocessError) as error:
         print(f"Demo setup failed: {error}", file=sys.stderr)
         raise SystemExit(1)

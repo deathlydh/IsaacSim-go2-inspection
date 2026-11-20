@@ -32,7 +32,7 @@ if /i "%~1"=="cancel" goto cancel
 if /i "%~1"=="obstacle" goto obstacle
 if /i "%~1"=="mapping" goto mapping
 if /i "%~1"=="rviz" goto rviz
-echo Usage: run_demo.bat [nav^|cv^|route^|cancel^|obstacle^|mapping^|rviz]
+echo Usage: run_demo.bat [nav^|cancel^|obstacle [--rviz] ^| cv ^| route ^| mapping ^| rviz]
 exit /b 2
 
 :cv
@@ -58,7 +58,18 @@ goto live
 :rviz
 set "GO2_DEMO_MODE=rviz"
 :live
-"%GO2_WINDOWS_PYTHON_EXE%" tools/run_demo.py %GO2_DEMO_MODE%
+set "GO2_VIEW=%~2"
+if "%~1"=="" if /i not "%GO2_DEMO_MODE%"=="rviz" if /i not "%GO2_DEMO_MODE%"=="mapping" (
+    choice /c YN /n /m "Open RViz alongside Nav2? [Y/N]: "
+    if errorlevel 255 exit /b 1
+    if not errorlevel 1 exit /b 1
+    if not errorlevel 2 set "GO2_VIEW=--rviz"
+)
+if defined GO2_VIEW if /i not "%GO2_VIEW%"=="--rviz" (
+    echo Unknown option. Use --rviz with nav, cancel or obstacle.
+    exit /b 2
+)
+"%GO2_WINDOWS_PYTHON_EXE%" tools/run_demo.py %GO2_DEMO_MODE% %GO2_VIEW%
 
 :done
 set "GO2_EXIT=%ERRORLEVEL%"
