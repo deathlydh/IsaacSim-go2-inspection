@@ -7,10 +7,29 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import time
 import uuid
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def run_mapping(command, output):
+    output.mkdir(parents=True, exist_ok=False)
+    with subprocess.Popen(command, cwd=ROOT, stdin=subprocess.DEVNULL) as process:
+        try:
+            while not (output / "mapping.ready").exists():
+                if process.poll() is not None:
+                    return process.returncode
+                time.sleep(0.2)
+            input("Drive in Isaac, then park and press Enter here to save the map. ")
+            (output / "save.request").touch(exist_ok=False)
+            return process.wait()
+        except (KeyboardInterrupt, EOFError):
+            (output / "cancel.request").touch()
+            print("Mapping canceled.", file=sys.stderr)
+            process.wait()
+            return 130
 
 
 def run(mode):
@@ -24,19 +43,20 @@ def run(mode):
     distro = os.environ.get("GO2_WSL_DISTRO", "Ubuntu-22.04")
     wsl = ["wsl.exe", "-d", distro, "--"]
     root_wsl = subprocess.check_output(
-        [*wsl, "wslpath", "-u", ROOT.as_posix()], text=True, timeout=30
+        [*wsl, "wslpath", "-u", ROOT.as_posix()], stdin=subprocess.DEVNULL, text=True, timeout=30
     ).strip()
     python_wsl = subprocess.check_output(
-        [*wsl, "wslpath", "-u", Path(sys.executable).as_posix()], text=True, timeout=30
+        [*wsl, "wslpath", "-u", Path(sys.executable).as_posix()], stdin=subprocess.DEVNULL,
+        text=True, timeout=30
     ).strip()
     run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "_" + uuid.uuid4().hex[:8]
     output = ROOT / "reports" / "demo" / run_id
     print(f"Results: {output}", flush=True)
-    status = subprocess.run(
-        [*wsl, "bash", f"{root_wsl}/tools/ros/demo_episode.sh", mode,
-         f"{root_wsl}/reports/demo/{run_id}", python_wsl, isaac.as_posix()],
-        cwd=ROOT,
-    ).returncode
+    command = [*wsl, "bash", f"{root_wsl}/tools/ros/demo_episode.sh", mode,
+               f"{root_wsl}/reports/demo/{run_id}", python_wsl, isaac.as_posix()]
+    if mode == "mapping":
+        return run_mapping(command, output)
+    status = subprocess.run(command, cwd=ROOT).returncode
     result_path = output / "nav2/result.json"
     if result_path.is_file():
         result = json.loads(result_path.read_text(encoding="utf-8"))
@@ -69,7 +89,7 @@ def run(mode):
             + overlay, encoding="utf-8",
         )
         print(f"Open: {output / 'index.html'}")
-    elif status == 0 and mode != "mapping":
+    elif status == 0:
         print(f"Navigation did not write a result: {result_path}", file=sys.stderr)
         return 1
     return status

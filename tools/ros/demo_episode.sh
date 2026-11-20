@@ -151,8 +151,15 @@ if ! grep -qx 'Publisher count: 1' <<<"$clock_info"; then
     exit 1
 fi
 if [[ "$mode" == mapping ]]; then
-    echo 'Drive with the keyboard in Isaac. Park, release the keys, then return here.'
-    read -r -p 'Press Enter to save the map and exit. Ctrl+C cancels. ' _
+    touch "$output/mapping.ready"
+    while [[ ! -e "$output/save.request" ]]; do
+        if [[ -e "$output/cancel.request" ]]; then exit 130; fi
+        if ! kill -0 "${processes[@]}" 2>/dev/null; then
+            echo 'Mapping stopped before the map was saved. See navigation.log.' >&2
+            exit 1
+        fi
+        sleep 0.25
+    done
     bash tools/ros/go2_nav2.sh save "$output/map"
     echo "Map saved at $output/map.yaml"
     exit 0
