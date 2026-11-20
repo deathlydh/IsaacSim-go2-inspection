@@ -20,10 +20,12 @@ class CommandControl:
                 self.cancel()
         self._timeline_sub = timeline.get_timeline_event_stream().create_subscription_to_pop(on_timeline)
 
-    def acquire(self, owner):
+    def acquire(self, owner, source="route"):
+        if source not in ("route", "ros"):
+            raise ValueError("invalid_command_source")
         if self.owner is not None:
             raise RuntimeError("mission_already_running")
-        self.source, self.owner = "route", owner
+        self.source, self.owner = source, owner
         self.cancel_requested = False
         self.pressed.clear()
         self.stop()
@@ -70,13 +72,18 @@ class CommandControl:
         return True
 
 
-def install_control(session):
+def install_control(session, *, upgrade=False):
     """Attach once without restarting the robot, scene, timeline or camera."""
-    if getattr(session, "control", None) is not None:
+    current = getattr(session, "control", None)
+    if current is not None and (not upgrade or type(current) is CommandControl):
         if getattr(session.control, "_timeline_sub", None) is None:
             CommandControl.watch_timeline(session.control)
         guard_policy_reset(session,session.control)
         return session.control
+    if current is not None:
+        if current.owner is not None or current.pressed or np.any(session.command):
+            raise RuntimeError("command_control_busy")
+        current._timeline_sub = None
     control = CommandControl(session)
     if session._key_sub is not None:
         session._input.unsubscribe_to_keyboard_events(session._keyboard, session._key_sub)
@@ -100,9 +107,10 @@ def guard_policy_reset(session,control):
         return
     original_reset = runner.restart_from_default_state
     def guarded_reset(*args,**kwargs):
-        if control.source == "route":
-            control.stop()
-            raise RuntimeError("policy_reset_forbidden_during_route")
+        active = getattr(session, "control", control)
+        if active.source in ("route", "ros"):
+            active.stop()
+            raise RuntimeError(f"policy_reset_forbidden_during_{active.source}")
         return original_reset(*args,**kwargs)
     runner.restart_from_default_state = guarded_reset
     runner._inspection_reset_guard = True

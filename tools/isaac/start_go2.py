@@ -155,12 +155,11 @@ class Go2Session:
             self.command.fill(0.0)
             return
         valid = runner.articulation.is_physics_tensor_entity_valid()
-        if getattr(getattr(self, "control", None), "source", "manual") == "route" and (not valid or not self.ready):
-            # A route must stop rather than restart_from_default_state (which
-            # would reset the robot pose and invalidate the verified segment).
+        source = getattr(getattr(self, "control", None), "source", "manual")
+        if source in ("route", "ros") and (not valid or not self.ready):
             self.failed = True
             self.command.fill(0.0)
-            carb.log_error("Go2Session: physics unavailable during route; refusing reset")
+            carb.log_error(f"Go2Session: physics unavailable during {source}; refusing reset")
             return
         if not valid:
             self.ready = False
@@ -211,6 +210,8 @@ class Go2Session:
 
     def close(self):
         """Release camera first, then callbacks, keyboard and runner. Idempotent; never touches the timeline."""
+        if getattr(self, "navigation", None) is not None:
+            self.navigation.close()
         if getattr(self, "control", None) is not None:
             self.control.cancel()
             self.control._timeline_sub = None
@@ -236,6 +237,8 @@ ctx = omni.usd.get_context()
 # 1. Tear down a previous run (camera first, see Go2Session.close).
 previous = getattr(sys, "_go2_inspection_session", None)
 if previous is not None:
+    if getattr(previous, "navigation", None) is not None:
+        previous.navigation.close()
     previous.close()
     sys._go2_inspection_session = None
 # Stop and settle before replacing the stage: Isaac Sim 6.1 crashes

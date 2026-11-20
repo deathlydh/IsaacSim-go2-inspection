@@ -1,0 +1,41 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+  - Class: rviz_common/Views
+    Name: Views
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Cell Size: 1
+      Name: Grid
+      Plane Cell Count: 40
+      Enabled: true
+    - Class: rviz_default_plugins/LaserScan
+      Name: Go2 LiDAR
+      Enabled: true
+      Color: 84; 233; 170
+      Color Transformer: FlatColor
+      Size (Pixels): 3
+      Style: Points
+      Topic:
+        Value: /scan
+        Depth: 5
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+        Durability Policy: Volatile
+    - Class: rviz_default_plugins/TF
+      Name: Go2 TF
+      Enabled: true
+      Marker Scale: 1.5
+  Global Options:
+    Background Color: 37; 43; 53
+    Fixed Frame: odom
+    Frame Rate: 15
+  Views:
+    Current:
+      Class: rviz_default_plugins/TopDownOrtho
+      Name: Top view
+      Scale: 31
+      X: 3
+      Y: 0
