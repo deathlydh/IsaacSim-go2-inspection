@@ -17,6 +17,11 @@ NVIDIA документирует Windows 11 для 6.1.0. На этом Windows
 
 ## Запуск и проверка
 
+Для отдельного просмотра лидара откройте цех через `start_factory.bat`,
+оставьте Isaac в Play и выберите пункт **7** в `run_demo.bat`. Запускатель
+дождётся сообщения `/scan` и откроет RViz. Если окно не появилось, пути
+к журналам `rviz.log`, `scan_header.log` и `relay.log` указаны в терминале.
+
 Пользователь открывает Isaac. Для чистого запуска цеха используется
 `D:\go2-inspection\start_factory.bat` из Проводника. Если Go2 уже открыт
 в Kit, оставьте текущую сцену и включите Play. Команды attach/status сцену
@@ -50,10 +55,11 @@ python3 tools/ros/wsl_go2_relay.py --windows-python /mnt/c/Users/Admin/AppData/L
 cd /mnt/d/go2-inspection
 source /opt/ros/humble/setup.bash
 export ROS_DOMAIN_ID=42
+export FASTRTPS_DEFAULT_PROFILES_FILE="$PWD/tools/ros/go2_fastdds_udp.xml"
 ros2 topic info /scan --verbose
 ros2 topic echo --once --qos-reliability best_effort /clock
 python3 tools/ros/verify_go2_navigation.py
-rviz2 -d tools/ros/go2_navigation.rviz --ros-args -p use_sim_time:=true
+QT_QPA_PLATFORM=xcb rviz2 -d tools/ros/go2_navigation.rviz --ros-args -p use_sim_time:=true
 ```
 
 Режим после подключения — `manual`. Для теста движения на свободном месте

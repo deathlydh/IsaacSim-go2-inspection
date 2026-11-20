@@ -57,6 +57,8 @@ def run(mode):
     if mode == "mapping":
         return run_mapping(command, output)
     status = subprocess.run(command, cwd=ROOT).returncode
+    if mode == "rviz":
+        return status
     result_path = output / "nav2/result.json"
     if result_path.is_file():
         result = json.loads(result_path.read_text(encoding="utf-8"))
@@ -97,7 +99,7 @@ def run(mode):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("mode", choices=["nav", "cancel", "obstacle", "mapping"])
+    parser.add_argument("mode", choices=["nav", "cancel", "obstacle", "mapping", "rviz"])
     try:
         raise SystemExit(run(parser.parse_args().mode))
     except (OSError, RuntimeError, ImportError, subprocess.SubprocessError) as error:

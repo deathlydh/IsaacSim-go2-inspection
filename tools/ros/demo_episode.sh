@@ -17,8 +17,18 @@ if [[ ! -f /opt/ros/humble/setup.bash ]]; then
     exit 1
 fi
 source /opt/ros/humble/setup.bash
-packages=(nav2_bringup nav2_map_server)
-if [[ "$mode" == mapping ]]; then packages+=(slam_toolbox); fi
+packages=()
+case "$mode" in
+    rviz)
+        packages=(rviz2)
+        if [[ -z "$DISPLAY" && -z "$WAYLAND_DISPLAY" ]]; then
+            echo 'RViz needs a graphical WSL session (WSLg or X11). Check DISPLAY / WAYLAND_DISPLAY.' >&2
+            exit 1
+        fi
+        ;;
+    mapping) packages=(nav2_map_server slam_toolbox) ;;
+    *) packages=(nav2_bringup nav2_map_server) ;;
+esac
 for package in "${packages[@]}"; do
     if ! ros2 pkg prefix "$package" >/dev/null; then
         echo "Missing ROS package $package. See README." >&2
@@ -46,6 +56,7 @@ demo_started=0
 obstacle_added=0
 relay_pid=
 nav_pid=
+rviz_pid=
 cleanup() {
     local status=$?
     trap - EXIT
@@ -61,6 +72,7 @@ cleanup() {
             status=1
         }
     fi
+    if [[ -n $rviz_pid ]]; then terminate "$rviz_pid"; fi
     if [[ -n $nav_pid ]]; then terminate "$nav_pid"; fi
     if [[ -n $relay_pid ]]; then terminate "$relay_pid"; fi
     exit "$status"
@@ -99,7 +111,7 @@ spawn = json.loads(Path("scenes/factory_hall_meta.json").read_text())["robot_spa
 if (not status["playing"] or status["owner"] != "manual" or any(status["command"])
         or pose is None):
     sys.exit("Leave Isaac in Play with Go2 stopped in manual mode, then retry.")
-if sys.argv[2] != "mapping" and (
+if sys.argv[2] not in ("mapping", "rviz") and (
         math.hypot(pose["x"] - spawn["position"][0], pose["y"] - spawn["position"][1]) > 0.30
         or abs(math.remainder(pose["yaw_rad"] - math.radians(spawn["yaw_deg"]), math.tau)) > 0.30):
     sys.exit("Go2 is away from its starting position. In Isaac, use Stop then Play, wait, and retry.")
@@ -120,6 +132,25 @@ elif [[ "$existing_relay" == 0 ]]; then
 else
     echo 'More than one WSL relay is running. Keep a single relay and retry.' >&2
     exit 1
+fi
+if [[ "$mode" == rviz ]]; then
+    echo 'Waiting for the first live LiDAR scan...'
+    if ! timeout 45s ros2 topic echo /scan sensor_msgs/msg/LaserScan --once \
+            --field header --qos-reliability best_effort --no-daemon >"$output/scan_header.log" 2>&1; then
+        echo "No live scan received. Check $output/scan_header.log and relay.log." >&2
+        exit 1
+    fi
+    echo 'Opening RViz. Close its window to end this session. Drive manually in Isaac.'
+    if [[ -n "$DISPLAY" ]]; then export QT_QPA_PLATFORM=xcb; fi
+    rviz2 -d tools/ros/go2_navigation.rviz --ros-args -p use_sim_time:=true \
+        >"$output/rviz.log" 2>&1 9>&- &
+    rviz_pid=$!
+    if ! wait "$rviz_pid"; then
+        echo "RViz exited with an error. See $output/rviz.log." >&2
+        exit 1
+    fi
+    rviz_pid=
+    exit 0
 fi
 if [[ "$mode" == mapping ]]; then
     launch=(mapping)
