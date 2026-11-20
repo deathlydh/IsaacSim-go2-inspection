@@ -39,11 +39,11 @@ def windows_path(path):
 
 
 def kit(action, output=None):
-    args = {"action": action}
+    args = {"action": action, "project_root": windows_path(ROOT)}
     if output is not None:
         args["output_path"] = windows_path(output)
     command = [
-        os.environ.get("GO2_WINDOWS_PYTHON", WINDOWS_PYTHON), "-I", KIT_SEND,
+        os.environ.get("GO2_WINDOWS_PYTHON", WINDOWS_PYTHON), "-I", os.environ.get("GO2_KIT_SEND", KIT_SEND),
         "--file", windows_path(ROOT / "tools/isaac/nav2_inspection.py"),
         "--args-json", json.dumps(args), "--timeout", "24",
     ]

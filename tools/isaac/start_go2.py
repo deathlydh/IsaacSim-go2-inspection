@@ -23,6 +23,7 @@ import importlib
 import json
 import math
 import os
+from pathlib import Path
 import sys
 
 import carb
@@ -38,8 +39,10 @@ from isaacsim.core.simulation_manager import IsaacEvents, SimulationManager
 from isaacsim.robot.policy.examples import RobotPolicyRunner, get_go2_spec
 from isaacsim.robot.policy.examples.interactive.example_base import make_velocity_keyboard_mapping
 
+root = Path(project_root if "project_root" in dir() else os.environ.get("GO2_PROJECT_ROOT", "D:/go2-inspection"))
 if "scene_path" not in dir():
-    scene_path = "D:/go2-inspection/scenes/inspection.usd"
+    scene_path = (root / "scenes/inspection.usd").as_posix()
+scene_path = Path(scene_path).as_posix()
 if "policy" not in dir():
     policy = "robot_lab"  # winner of the gait A/B test (docs/gait_ab/RESULTS.md)
 if "camera" not in dir():
@@ -57,7 +60,7 @@ if "kp" not in dir():
 if "sim_device" not in dir():
     sim_device = "cpu"  # measured: "cuda" for tensors/policy gives the same ~38 FPS for one robot
 
-TOOLS_DIR = "D:/go2-inspection/tools/isaac"
+TOOLS_DIR = (root / "tools/isaac").as_posix()
 ROBOT_PATH = "/World/Robot"  # not /World/Go2: avoids clashing with a still-loaded NVIDIA example
 SPAWN_HEIGHT = 0.5           # base height at spawn; the robot drops onto its feet
 RENDER_HZ = 50               # 4 physics steps (200 Hz) per rendered frame, as in training

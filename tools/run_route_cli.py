@@ -2,6 +2,7 @@
 import argparse
 from datetime import datetime, timezone
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -9,7 +10,7 @@ import time
 import uuid
 
 ROOT = Path(__file__).resolve().parents[1]
-CLIENT = Path('D:/isaacsim/skills/isaac-sim-remote/scripts/isaacsim_send.py')
+CLIENT = Path(os.environ.get('GO2_ISAAC_DIR', 'D:/isaacsim')) / 'skills/isaac-sim-remote/scripts/isaacsim_send.py'
 
 def send(script, *args):
     command = [sys.executable,'-I',str(CLIENT),'--file',str(ROOT/'tools/isaac'/script),'--arg',f'project_root={ROOT.as_posix()}',*args]

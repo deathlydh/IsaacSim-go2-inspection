@@ -1,12 +1,13 @@
 """Kit endpoint for the Nav2 demo. Use through the existing localhost Python server."""
 import json
 import math
+import os
 from pathlib import Path
 import sys
 import time
 
 
-root = Path("D:/go2-inspection")
+root = Path(project_root if "project_root" in dir() else os.environ.get("GO2_PROJECT_ROOT", "D:/go2-inspection"))
 if str(root) not in sys.path:
     sys.path.insert(0, str(root))
 from inspection.adapters.isaac import KitCamera

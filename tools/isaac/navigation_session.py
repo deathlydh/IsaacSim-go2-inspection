@@ -2,12 +2,14 @@
 
 import importlib
 import os
+from pathlib import Path
 import sys
 
 import omni.kit.app
 from omni.ext._impl import stat_cache
 
-directory = "D:/go2-inspection/tools/isaac"
+root = Path(project_root if "project_root" in dir() else os.environ.get("GO2_PROJECT_ROOT", "D:/go2-inspection"))
+directory = (root / "tools/isaac").as_posix()
 if directory not in sys.path:
     sys.path.insert(0, directory)
 

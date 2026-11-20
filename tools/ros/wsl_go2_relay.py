@@ -5,6 +5,7 @@ using the Jazzy libraries shipped with Isaac Sim. No inbound ports are needed.
 """
 
 import argparse
+import signal
 import os
 from pathlib import Path
 from queue import Empty, Queue
@@ -120,6 +121,11 @@ def wsl_worker(args):
 
 
 if __name__ == "__main__":
+    def stop_relay(_signum, _frame):
+        raise KeyboardInterrupt
+
+    if not sys.platform.startswith("win"):
+        signal.signal(signal.SIGTERM, stop_relay)
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--windows-worker", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--windows-python", default="python.exe")
