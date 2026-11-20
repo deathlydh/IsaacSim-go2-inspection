@@ -16,6 +16,7 @@ if "%~1"=="" (
     echo [7] RViz: view the live LiDAR scan
     choice /c 1234567 /n /m "Select: "
     if errorlevel 255 exit /b 1
+    if not errorlevel 1 exit /b 1
     if errorlevel 7 goto rviz
     if errorlevel 6 goto mapping
     if errorlevel 5 goto obstacle
